@@ -1,0 +1,5 @@
+# dependencies
+node_modules/
+
+# DB url and authentication info
+config/db.js
