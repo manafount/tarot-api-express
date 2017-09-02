@@ -1,4 +1,4 @@
-const tarotRoutes = require('./tarot_routes');
+const tarotRoutes = require('./tarot-routes');
 
 module.exports = function(app, db) {
   tarotRoutes(app, db);

@@ -10,11 +10,14 @@
   "author": "Matt Kerchner <manafount@gmail.com> (https://mkerch.io/)",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "3.5.0",
     "body-parser": "1.17.2",
     "express": "4.15.4",
-    "mongodb": "2.2.31"
+    "mongodb": "2.2.31",
+    "mongoose": "4.11.9"
   },
   "devDependencies": {
+    "axios": "0.16.2",
     "nodemon": "1.11.0"
   }
 }
