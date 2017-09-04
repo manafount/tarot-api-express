@@ -1,0 +1,41 @@
+{
+  "name": "card",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "suit": {
+      "type": "string",
+      "required": true,
+      "default": "Major Arcana"
+    },
+    "keywords": {
+      "type": [
+        "string"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "correspondences": {
+      "type": "object"
+    },
+    "readings": {
+      "type": "object",
+      "required": true
+    },
+    "imgURL": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
