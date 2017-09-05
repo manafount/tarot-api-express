@@ -22,6 +22,9 @@
     "strong-error-handler": "^2.0.0"
   },
   "devDependencies": {
+    "artoo-js": "0.3.4",
+    "axios": "0.16.2",
+    "cheerio": "1.0.0-rc.2",
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0",
     "nsp": "^2.1.0"
