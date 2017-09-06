@@ -42,7 +42,7 @@ class TarotScraper {
       let card = {};
 
       if(url.match(/major-arcana/)) {
-        let name = 'The ' + url.match(/major-arcana\/([^\/]*)\//)[1];
+        let name = url.match(/major-arcana\/([^\/]*)\//)[1];
         card.name = this.capitalizeText(name.replace(/-/g, ' '));
         card.suit = "Major Arcana";
       }else if(url.match(/suit-of/)) {
