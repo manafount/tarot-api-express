@@ -52,10 +52,50 @@ class TarotScraper {
         card.suit = this.capitalizeText(matches[1]);
       }
       
-      card.keywords = $('#card-page-keywords > p').text();
+      let upkeys = $('#card-page-keywords > p').eq(0).text();
+      upkeys = this.capitalizeText(upkeys.replace(/Upright: /, ''));
+      upkeys = upkeys.split(', ');
+      let revkeys = $('#card-page-keywords > p').eq(1).text();
+      revkeys = this.capitalizeText(revkeys.replace(/Reversed: /, ''));
+      revkeys = revkeys.split(', ');
+
+      card.keywords = {
+        upright: upkeys,
+        reversed: revkeys
+      };
+
       card.imgURL = $('#card-page-image > img').attr('src');
 
-      
+      let description = '';
+      $('#card-page-description > p').each(function(i) {
+        if (description.length > 0) {
+          description = description.concat('\n');
+        }
+        description = description.concat($(this).text());
+      });
+      card.description = description;
+  
+      let upreading = '';
+      $('#card-meaning > p').each(function(i) {
+        if (upreading.length > 0) {
+          upreading = upreading.concat('\n');
+        }
+        upreading = upreading.concat($(this).text());
+      });
+
+      let revreading = '';
+      $('#card-meaning-reversed > p').each(function(i) {
+        if (revreading.length > 0) {
+          revreading = revreading.concat('\n');
+        }
+        revreading = revreading.concat($(this).text());
+      });
+
+      card.readings = {
+        upright: upreading,
+        reversed: revreading
+      }
+
       return card;
     })
     .catch((error) => {
@@ -75,6 +115,8 @@ class TarotScraper {
   }
 }
 
+// scrape tarot cards/readings and bootstrap our tarot api
+
 let ts = new TarotScraper;
 let baseUrl = "https://www.biddytarot.com";
 let promiseQueue = [];
@@ -84,11 +126,38 @@ startPoints.forEach(start => {
 Promise.all(promiseQueue)
 .then(data => {
   data = _.flatten(data);
-  console.log(data);
   return data;
 })
 .then(urls => {
-  let url = baseUrl + urls[29].url;
-  return ts.getCardInfo(url);
+  promiseQueue = [];
+  urls.forEach(url => {
+    promiseQueue.push(ts.getCardInfo(baseUrl.concat(url.url)));
+  })
+  return Promise.all(promiseQueue);
 })
-.then(card => console.log(card));
+.then(cards => {
+  // login to our API server to get an access token
+  return axios.post('http://localhost:3000/api/Users/login', {
+    username: 'username',
+    password: 'password'
+  })
+  .then((response) => {
+    let access = response.data.id;
+    promiseQueue = [];
+    cards.forEach(card => {
+      promiseQueue.push(
+        axios({
+          method: 'post',
+          url: 'http://localhost:3000/api/cards',
+          headers: { 'Authorization': access },
+          data: card
+        })
+      );
+    });
+    return Promise.all(promiseQueue);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+})
+.then(() => console.log('done'));

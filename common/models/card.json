@@ -16,9 +16,7 @@
       "default": "Major Arcana"
     },
     "keywords": {
-      "type": [
-        "string"
-      ]
+      "type": "object"
     },
     "description": {
       "type": "string"
