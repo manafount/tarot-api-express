@@ -43,7 +43,7 @@ class TarotScraper {
 
       if(url.match(/major-arcana/)) {
         let name = 'The ' + url.match(/major-arcana\/([^\/]*)\//)[1];
-        card.name = this.capitalizeText(name);
+        card.name = this.capitalizeText(name.replace(/-/g, ' '));
         card.suit = "Major Arcana";
       }else if(url.match(/suit-of/)) {
         let matches = url.match(/suit-of-([^\/]*)\/([^\/]*)/);
@@ -129,6 +129,7 @@ Promise.all(promiseQueue)
   return data;
 })
 .then(urls => {
+  console.log('Found ' + urls.length + ' tarot card urls.');
   promiseQueue = [];
   urls.forEach(url => {
     promiseQueue.push(ts.getCardInfo(baseUrl.concat(url.url)));
@@ -138,11 +139,12 @@ Promise.all(promiseQueue)
 .then(cards => {
   // login to our API server to get an access token
   return axios.post('http://localhost:3000/api/Users/login', {
-    username: 'username',
-    password: 'password'
+    username: 'name',
+    password: 'pass'
   })
   .then((response) => {
     let access = response.data.id;
+    console.log('Login successful with access token: ' + access);
     promiseQueue = [];
     cards.forEach(card => {
       promiseQueue.push(
