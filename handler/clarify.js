@@ -1,20 +1,53 @@
 /*
-Code for use in AWS Lambda function to act as a middleman between
+Code for use in an AWS Lambda function to act as a middleman between
 the Tarot API and the conversational interface on API.AI
 */
+
 'use strict';
 let http = require('http');
 let tarotAPI = "tarotreader-179104.appspot.com";
 
-console.log('Loading function');
+console.log('Loading clarify function...');
 
 exports.handler = function(event, context, callback) {
   console.log(event.result.parameters);
   
+  /* 
+    Event object should be in the shape of:
+      {
+        ...
+        "result": {
+          "source": "agent",
+          "resolvedQuery": string,
+          "action": string,
+          "actionIncomplete": false,
+          "parameters": {
+            "card": string,
+            "orientation": string,
+            "suit": string,
+          },
+          "contexts": [],
+          "metadata": {
+            ...
+            "intentName": string
+          },
+          "fulfillment": {
+            "speech": string,
+            ...
+          }
+        },
+        "status": {
+          "code": int,
+          "errorType": string
+        },
+        "sessionId": string
+      }
+  */
+
   let cardName = event.result.parameters['card'];
   
   if (event.result.parameters['suit']) {
-      cardName.concat(' ' + event.result.parameters['suit']);
+      cardName = cardName.concat(' of ' + event.result.parameters['suit']);
   }
   
   cardName = capitalizeText(cardName);
@@ -30,7 +63,7 @@ exports.handler = function(event, context, callback) {
         }else{
             response = data.readings.upright;
         }
-        callback(null, {"speech": response.slice(0, 140)});
+        callback(null, {"speech": response});
     }
     else {
         callback(null, {"speech": "I'm not sure!"});
@@ -39,6 +72,9 @@ exports.handler = function(event, context, callback) {
 };
  
 function searchCardsByName(cardName) {
+    // escape spaces before appending cardName to query string
+    cardName = cardName.replace(/ /g,'%20');
+    console.log(cardName);
     return {
         host: tarotAPI,
         path: `/api/cards/findOne?filter[where][name]=${cardName}`
