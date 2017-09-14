@@ -6,7 +6,7 @@ the Tarot API and the conversational interface on API.AI
 In order to avoid creating a Deployment Package for such a small app,
 I had to keep all of the logic for fulfillment in a single file and
 only use packages included in Node and the AWS SDK. I plan to refactor 
-this out into separate files and use promises instead of callbacks.
+this out into separate files and use a promise-based http client instead.
 */
 
 'use strict';
@@ -60,7 +60,7 @@ exports.handler = function(event, context, callback) {
                 describeCard(event, callback);
                 break;
             case "Read Fortune Intent":
-                readingIntent(event, callback);
+                getReading(event, callback);
                 break;
             default:
                 console.log("No matching fulfillment method available for: " + intent);
@@ -69,6 +69,63 @@ exports.handler = function(event, context, callback) {
 
 
 };
+
+function getReading(event, callback) {
+
+}
+
+function describeCard(event, callback) {
+    let cardName = event.result.parameters['card'];
+    
+    if (event.result.parameters['suit']) {
+        cardName = cardName.concat(' of ' + event.result.parameters['suit']);
+    }
+
+    cardName = capitalizeText(cardName);
+
+    let options = searchCardsByName(cardName);
+
+    makeRequest(options, function( data, error) {
+        let res = data;
+        if (res) {
+            let response = data.description;
+            callback(null, {
+                "speech": response,
+                "textDisplay": response,
+                "data": {
+                    "slack": {
+                        "text": response,
+                        "attachments": [
+                            {
+                                "title": data.name,
+                                "text": data.suit,
+                                "color": "#36a64f",
+                    
+                                "fields": [
+                                    {
+                                        "title": "Keywords (Upright)",
+                                        "value": data.keywords.upright.join(', '),
+                                        "short": "false"
+                                    },
+                                    {
+                                        "title": "Kyewords (Reversed)",
+                                        "value": data.keywords.reversed.join(', '),
+                                        "short": "false"
+                                    }
+                                ],
+                    
+                                "image_url": data.imgURL
+                            }
+                        ]
+                    }
+                }
+            });
+        }
+        else {
+            callback(null, {"speech": "I'm not sure!"});
+        }
+    });
+}
 
 function clarifyCard(event, callback) {
     let cardName = event.result.parameters['card'];
