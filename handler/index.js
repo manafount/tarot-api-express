@@ -1,12 +1,13 @@
 /*
 Code for use in an AWS Lambda function to act as a middleman between
-the Tarot API and the conversational interface on API.AI
+a Tarot Card API and a conversational interface on API.AI
 
 **NOTES**
 In order to avoid creating a Deployment Package for such a small app,
 I had to keep all of the logic for fulfillment in a single file and
 only use packages included in Node and the AWS SDK. I plan to refactor 
-this out into separate files and use a promise-based http client instead.
+this out into separate files and use a promise-based http client in the
+future.
 */
 
 'use strict';
@@ -149,7 +150,37 @@ function clarifyCard(event, callback) {
             }
             response = response.split('\n')
             response = response[Math.floor(Math.random()*response.length)];
-            callback(null, {"speech": response});
+            callback(null, {
+                "speech": response,
+                "textDisplay": response,
+                "data": {
+                    "slack": {
+                        "text": response,
+                        "attachments": [
+                            {
+                                "title": data.name,
+                                "text": data.suit,
+                                "color": "#36a64f",
+                    
+                                "fields": [
+                                    {
+                                        "title": "Keywords (Upright)",
+                                        "value": data.keywords.upright.join(', '),
+                                        "short": "false"
+                                    },
+                                    {
+                                        "title": "Kyewords (Reversed)",
+                                        "value": data.keywords.reversed.join(', '),
+                                        "short": "false"
+                                    }
+                                ],
+                    
+                                "image_url": data.imgURL
+                            }
+                        ]
+                    }
+                }
+            });
         }
         else {
             callback(null, {"speech": "I'm not sure!"});
@@ -171,7 +202,7 @@ function capitalizeText(string) {
     return string.replace(/\w\S*/g, (txt) => {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });    
-  }
+}
  
 function makeRequest(options, callback) {
     var request = http.request(options, 
