@@ -72,7 +72,44 @@ exports.handler = function(event, context, callback) {
 };
 
 function getReading(event, callback) {
+    let readingType = event.result.parameters['reading'];
+    let numCards;
 
+    switch(readingType) {
+        case "one card":
+            numCards = 1;
+            break;
+        case "three card":
+            numCards = 3;
+            break;
+        case "five card":
+            numCards = 5;
+            break;
+        default:
+            numCards = 1;
+            break;
+    }
+
+    let options = getTarotSpread(numCards);
+
+    console.log(options);
+    makeRequest(options, function( data, error) {
+        if (data) {
+            console.log(data);
+            let response = data.spread;
+            callback(null, {
+                "speech": response,
+                "textDisplay": response,
+                "data": {
+                    "slack": {
+                    }
+                }
+            });
+        }
+        else {
+            callback(null, {"speech": "I'm not sure!"});
+        }
+    });
 }
 
 function describeCard(event, callback) {
@@ -87,8 +124,7 @@ function describeCard(event, callback) {
     let options = searchCardsByName(cardName);
 
     makeRequest(options, function( data, error) {
-        let res = data;
-        if (res) {
+        if (data) {
             let response = data.description;
             callback(null, {
                 "speech": response,
@@ -140,8 +176,7 @@ function clarifyCard(event, callback) {
     let options = searchCardsByName(cardName);
 
     makeRequest(options, function( data, error) {
-        let res = data;
-        if (res) {
+        if (data) {
             let response = ''
             if (event.result.parameters['orientation'].toLowerCase() === 'reversed') {
                 response = data.readings.reversed;
@@ -187,7 +222,14 @@ function clarifyCard(event, callback) {
         }
     });
 }
- 
+
+function getTarotSpread(numCards) {
+    return {
+        host: tarotAPI,
+        path: `/api/cards/spread?numCards=${numCards}`
+    };
+}
+
 function searchCardsByName(cardName) {
     // escape spaces before appending cardName to query string
     cardName = cardName.replace(/ /g,'%20');
