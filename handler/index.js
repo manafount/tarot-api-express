@@ -96,10 +96,10 @@ function getReading(event, callback) {
     makeRequest(options, function( data, error) {
         if (data) {
             console.log(data);
-            let response = data.spread;
+            let { spread } = data;
             callback(null, {
-                "speech": response,
-                "textDisplay": response,
+                "speech": spread,
+                "textDisplay": spread,
                 "data": {
                     "slack": {
                     }

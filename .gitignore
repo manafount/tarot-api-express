@@ -18,5 +18,7 @@ coverage
 node_modules
 npm-debug.log
 
+/test/api_tests.js
+/scraper/cloudinary_upload.js
 /server/datasources.json
 
