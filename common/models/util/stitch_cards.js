@@ -1,9 +1,7 @@
 // This is a utility function to stitch multiple card images together 
 // and return a single image for display in Slack, Messenger, etc.
-let axios = require('axios');
-let _ = require('lodash');
 let cloudinary = require('cloudinary');
-let keys = require('../secret/cloudinary_key.js');
+let keys = require('../../../secret/cloudinary_key.js');
 
 cloudinary.config(keys);
 
@@ -12,7 +10,15 @@ let cardWidth = 150;
 let gutter = 25;
 
 function createSpreadImage (cards) {
+  let cloudinary = require('cloudinary');
+  let keys = require('../../../secret/cloudinary_key.js');
+  let bgImg = "tarot_blue_background_y0y3cd.jpg";
+  let cardWidth = 150;
+  let gutter = 25;
   let options;
+  
+  cloudinary.config(keys);
+  
   if (cards) {
     let bgWidth = (cards.length * (cardWidth + gutter)) + gutter;
     options = {
@@ -49,14 +55,4 @@ function createSpreadImage (cards) {
   return cloudinary.url(bgImg, options);
 }
 
-axios.get('http://localhost:3000/api/cards')
-.then(res => {
-  let cards = res.data;
-  return createSpreadImage(cards.slice(0,5));
-})
-.then(img => {
-  console.log(img);
-})
-.catch(err => {
-  console.log(err);
-});
+module.exports = createSpreadImage;

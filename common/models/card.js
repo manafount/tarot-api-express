@@ -1,21 +1,28 @@
 'use strict';
+let createSpreadImage = require('./util/stitch_cards.js');
 
 module.exports = function(Card) {
   Card.spread = function(numCards, cb) {
     return Card.find()
       .then(allCards => {
-        let res = []
+        let cards = []
         let orientations = ['upright', 'reversed'];
-        while(res.length < numCards){
+        while(cards.length < numCards){
             let randomCard = allCards[Math.floor(Math.random()*78)];
-            if(!res.includes(randomCard)) {
+            if(!cards.includes(randomCard)) {
               let orientation = orientations[Math.floor(Math.random()*2)];
               randomCard.orientation = orientation;
-              res.push(randomCard);
+              cards.push(randomCard);
             }
         }
-        console.log(res);
-        return res;
+        console.log(cards);
+        return cards;
+      })
+      .then(cards => {
+        return {
+          cards,
+          spreadImg: createSpreadImage(cards)
+        }
       })
       .catch(err => {
         console.log(err);
@@ -35,7 +42,7 @@ module.exports = function(Card) {
       },
       returns: {
         arg: 'spread',
-        type: 'array',
+        type: 'object',
       },
     }
   );
