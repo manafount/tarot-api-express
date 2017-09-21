@@ -102,6 +102,14 @@ function getReading(event, callback) {
                 "textDisplay": spread,
                 "data": {
                     "slack": {
+                        "text": "test",
+                        "attachments": [
+                            {
+                                "title": 'Your ' + readingType + ' reading.',
+                                "color": "#36a64f",
+                                "image_url": spread.spreadImg
+                            }
+                        ]
                     }
                 }
             });
