@@ -97,9 +97,10 @@ function getReading(event, callback) {
         if (data) {
             console.log(data);
             let { spread } = data;
+            
             callback(null, {
-                "speech": spread,
-                "textDisplay": spread,
+                "speech": "test",
+                "textDisplay": "test",
                 "data": {
                     "slack": {
                         "text": "test",
