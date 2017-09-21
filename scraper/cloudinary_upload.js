@@ -2,7 +2,7 @@
 let axios = require('axios');
 let _ = require('lodash');
 let cloudinary = require('cloudinary');
-let keys = require('../secret/cloudinary_keys.js');
+let keys = require('../secret/cloudinary_key.js');
 
 cloudinary.config(keys);
 
