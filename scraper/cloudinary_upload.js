@@ -2,12 +2,9 @@
 let axios = require('axios');
 let _ = require('lodash');
 let cloudinary = require('cloudinary');
+let keys = require('../secret/cloudinary_keys.js');
 
-cloudinary.config({ 
-  cloud_name: 'name', 
-  api_key: 'key', 
-  api_secret: 'secret' 
-});
+cloudinary.config(keys);
 
 let accessToken;
 let cards;
