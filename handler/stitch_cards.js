@@ -26,21 +26,27 @@ function createSpreadImage (cards) {
       let leftEdge = 0 - (Math.floor(bgWidth / 2));
       let startPoint = leftEdge + Math.floor(cardWidth / 2) + gutter;
       let offset = startPoint + ((cardWidth + gutter) * i);
+      let angle = 0;
+
+      if (cards[i].orientation) {
+        if(cards[i].orientation === "reversed") {
+          angle = 180;
+        }
+      }
 
       options.transformation.push({
+        angle,
         overlay: imgID,
         width: cardWidth,
         x: offset,
         crop: "scale"
       });
     }
-
-    console.log(options);
   }else{
     console.log('No card objects supplied.');
     return;
   }
-  return cloudinary.image(bgImg, options);
+  return cloudinary.url(bgImg, options);
 }
 
 axios.get('http://localhost:3000/api/cards')
