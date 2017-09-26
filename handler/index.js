@@ -120,8 +120,8 @@ function getReading(event, callback) {
                     break;
                 case 3:
                     text = `The card representing your past is the ${cards[0].name} ` + 
-                        `(${cards[0].orientation}). The card indicative of your present situation ` + 
-                        `is the ${cards[1].name} (${cards[1].orientation}). The card depicting ` + 
+                        `(${cards[0].orientation}).\n The card indicative of your present situation ` + 
+                        `is the ${cards[1].name} (${cards[1].orientation}).\n The card depicting ` + 
                         `your future is the ${cards[2].name} (${cards[2].orientation}).`;
                     positions = ["your past", "the present", "the future"];
                     for(let i=0; i<3; i++) {
@@ -129,11 +129,11 @@ function getReading(event, callback) {
                     }
                     break;
                 case 5:
-                    text = `The challenge facing you: the ${cards[0].name} (${cards[0].orientation}). ` + 
-                        `Your past: the ${cards[1].name} (${cards[1].orientation}). ` + 
-                        `The present: the ${cards[2].name} (${cards[2].orientation}). ` + 
-                        `The future: the ${cards[3].name} (${cards[3].orientation}). ` + 
-                        `Your possibilities: the ${cards[4].name} (${cards[4].orientation}). `;
+                    text = `The challenge facing you: the ${cards[0].name} (${cards[0].orientation}).\n` + 
+                        `Your past: the ${cards[1].name} (${cards[1].orientation}).\n` + 
+                        `The present: the ${cards[2].name} (${cards[2].orientation}).\n` + 
+                        `The future: the ${cards[3].name} (${cards[3].orientation}).\n` + 
+                        `Your possibilities: the ${cards[4].name} (${cards[4].orientation}). \n`;
                     positions = ["the challenge facing you", "your past", 
                         "the present", "the future", "your possibilities"];
                     for(let i=0; i<5; i++) {
@@ -173,12 +173,16 @@ function formatSpeech(card, position) {
     let keys = card.keywords[card.orientation];
     let name = `${card.name} (${card.orientation})`;
 
-    keys = keys.slice(0, -1).join(', ') + ', and' + keys.slice(-1);
+    if(keys.length > 1){
+        keys = keys.slice(0, -1).join(', ') + ', and ' + keys.slice(-1);
+    }else{
+        keys = keys[0];
+    }
     if (position) {
         return `The card representing ${position} is the ${name}. 
-            The ${name} is associated with ${keys}`;
+            The ${name} is associated with ${keys}. \n`;
     }else{
-        return `The ${name} is associated with ${keys}`;
+        return `The ${name} is associated with ${keys}.`;
     }
 }
 
