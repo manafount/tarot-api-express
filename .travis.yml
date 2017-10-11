@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+- '8'
+- '7'
+deploy:
+  provider: gae
+  project: tarotreader-179104
+before_install:
+- openssl aes-256-cbc -K $encrypted_f2417a3329c9_key -iv $encrypted_f2417a3329c9_iv
+  -in client-secret.json.enc -out client-secret.json -d

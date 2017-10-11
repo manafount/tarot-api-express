@@ -42,7 +42,8 @@
   },
   "files": {},
   "final": {
-    "loopback#urlNotFound": {}
+    "loopback#urlNotFound": {},
+    "./middleware/sentry": {}
   },
   "final:after": {
     "strong-error-handler": {}

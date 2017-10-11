@@ -115,7 +115,7 @@ function getReading(event, callback) {
 
             switch(cards.length) {
                 case 1:
-                    text = `You drew the ${cards[0].name} (${cards[0].orientation}).`;
+                    text = `You drew the ${cards[0].name} (${cards[0].orientation}). `;
                     speech = text + formatSpeech(cards[0]);
                     break;
                 case 3:
