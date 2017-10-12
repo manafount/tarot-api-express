@@ -8,6 +8,7 @@
   "scripts": {
     "lint": "eslint .",
     "start": "node .",
+    "test": "node_modules/.bin/mocha -w",
     "posttest": "npm run lint && nsp check"
   },
   "dependencies": {
@@ -30,7 +31,9 @@
     "cheerio": "1.0.0-rc.2",
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0",
-    "nsp": "^2.1.0"
+    "mocha": "4.0.1",
+    "nsp": "^2.1.0",
+    "should": "13.1.2"
   },
   "repository": {
     "type": "",
