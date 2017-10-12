@@ -1,10 +1,5 @@
 // This is a utility function to stitch multiple card images together 
 // and return a single image for display in Slack, Messenger, etc.
-let cloudinary = require('cloudinary');
-let keys = require('../../../secret/cloudinary_key.js');
-
-cloudinary.config(keys);
-
 let bgImg = "tarot_blue_background_y0y3cd.jpg";
 let cardWidth = 150;
 let gutter = 25;
