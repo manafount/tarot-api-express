@@ -11,12 +11,21 @@ let gutter = 25;
 
 function createSpreadImage (cards) {
   let cloudinary = require('cloudinary');
-  let keys = require('../../../secret/cloudinary_key.js');
   let bgImg = "tarot_blue_background_y0y3cd.jpg";
   let cardWidth = 150;
   let gutter = 25;
+  let keys;
   let options;
   
+  try {
+    keys = require('../../../secret/cloudinary_key.js');
+  } catch (e) {
+    keys = {
+      cloud_name: process.env.CLOUDINARY_NAME,
+      api_key: process.env.CLOUDINARY_KEY,
+      api_secret: process.env.CLOUDINARY_SECRET,
+    };
+  }
   cloudinary.config(keys);
   
   if (cards) {
