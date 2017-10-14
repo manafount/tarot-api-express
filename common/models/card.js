@@ -15,7 +15,6 @@ module.exports = function(Card) {
               cards.push(randomCard);
             }
         }
-        console.log(cards);
         return cards;
       })
       .then(cards => {
