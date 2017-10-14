@@ -1,10 +1,23 @@
-var loopbackApiTesting = require('loopback-api-testing');
-var tests = require('./apiTestConfig.json');
-var server = require('../server/server.js');
-var url = 'http://localhost:3000/api';
+'use strict'
+
+let app = require('../server/server.js');
+let chai = require('chai');
+let request = require('supertest');
+
+let expect = chai.expect;
  
-loopbackApiTesting.run(tests, server, url, function(err) {
-  if (err) {
-    console.log(err);
-  }
+describe('Tarot Cards API Integration Tests', function() {
+  describe('#GET /api/cards', function() { 
+    it('should get all cards', function(done) { 
+      request(app) .get('/api/cards')
+        .end(function(err, res) { 
+          expect(res.statusCode).to.equal(200); 
+          expect(res.body).to.be.an('array');
+          expect(res.body.length).to.equal(78);
+          done(); 
+        }); 
+    });
+  });
 });
+
+after(done => process.exit());

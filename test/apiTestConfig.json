@@ -1,7 +1,0 @@
-[
-  {
-    "method": "GET",
-    "model": "Users",
-    "expect": 401
-  }
-]
