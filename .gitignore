@@ -20,6 +20,5 @@ npm-debug.log
 
 /secret/cloudinary_key.js
 /secret/sentry_key.js
-/test/api_tests.js
 /server/datasources.json
 
