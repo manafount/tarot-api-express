@@ -9,10 +9,10 @@ deploy:
   keyfile: client-secret.json
   on: master
 before_install:
-- openssl aes-256-cbc -K $encrypted_7e11b4f1054c_key -iv $encrypted_7e11b4f1054c_iv
-  -in server/datasources.json.enc -out server/datasources.json -d
 - openssl aes-256-cbc -K $encrypted_f2417a3329c9_key -iv $encrypted_f2417a3329c9_iv
   -in client-secret.json.enc -out client-secret.json -d
+- openssl aes-256-cbc -K $encrypted_7e11b4f1054c_key -iv $encrypted_7e11b4f1054c_iv
+  -in ./server/datasources.json.enc -out ./server/datasources.json -d
 env:
   matrix:
     secure: FsbBKqanj2IRYB/X6qahJm9TMbSlDWiSXgDuOL9nvPJzDNpxPGK1kvIlcHuP9QGlYCx7mCd5w030Fho02j7MpUdycTKEJGG78l395kl/pgOkmcvt3ql3ZFv8lUHlnpfC9RV0OxeWxoIVNJfw/bof9UDVLqVmf8jQuHCTVexi1NwWok26xl6yH8f1Mc2qHAuK6uzJJEF90j4lvKTKnH9f7zEZeUghxJGsz1upfZDcUBLh0VunMdzGep40FFcRSKLBIwWeEctWZmDYMQkf1BKeKRlz+hf9a51t8IgCoiN1lnrddsk7PO96lUNMjDd1mEfmLnqdwTtUqVcblQl/atcszDw65N56JIBn5uYPBNZTVAaNP8cX96jS7PQQv7fisY+y/rP2KfuFDwGRaXHIoW7qJJcD4u47HO4cZXoK/xptnaWTXoQ810Id+ufk/FNX89th3KfH2rdB8qMLLcYPmfddIXh8MCUFYXqMnBzgVLHniw69NnIizxnqOdgY8oCRM0a6MueLvxEOu5TzSkabONekgIxYnemTjmnmF19MmmCjLDtSKsV7lndHa5Ay1e+PfAkdb+wLUyG5TXiLbsMbjepPUKRZBSAVyxcQnKk/ggQd265oq8K4OGP4EML8v27FrH6jIEpUDWEDyi2gc0nqQOj0Nv0sfXdHBg663shCXwJDNPw=

@@ -328,6 +328,7 @@ function makeRequest(options, callback) {
             responseString += data;
         });
          response.on('end', function() {
+            console.log(responseString);
             var responseJSON = JSON.parse(responseString);
             callback(responseJSON, null);
         });
