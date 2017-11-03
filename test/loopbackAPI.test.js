@@ -54,7 +54,7 @@ describe('Tarot Cards API Integration Tests', function() {
   });
 
   describe('#GET /api/cards/spread?numCards=5', function() { 
-    it('should return a spread with the requested number of cards', function(done) { 
+    it('should return a spread with the requested number of card objects', function(done) { 
       request(app) .get('/api/cards/spread?numCards=5')
         .end(function(err, res) { 
           let { spread } = res.body;
@@ -68,3 +68,4 @@ describe('Tarot Cards API Integration Tests', function() {
 });
 
 after(done => process.exit());
+
