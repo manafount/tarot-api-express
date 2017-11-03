@@ -18,6 +18,7 @@ coverage
 node_modules
 npm-debug.log
 
+secret
 /secret/cloudinary_key.js
 /secret/sentry_key.js
 /server/datasources.json
